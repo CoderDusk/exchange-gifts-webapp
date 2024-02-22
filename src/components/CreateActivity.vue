@@ -7,6 +7,7 @@
     v-model="createActivityDialogVisible"
     :title="$t('create.title')"
     width="500"
+    :fullscreen="isMobile"
   >
     <el-form :model="createActivityForm" label-width="100px">
       <el-form-item :label="$t('create.form.title')">
@@ -65,6 +66,12 @@ import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits(['getList']);
 const { t } = useI18n();
+
+const userAgent = navigator.userAgent;
+const isMobile =
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    userAgent
+  );
 
 // 创建活动
 const createActivityDialogVisible = ref(false);
