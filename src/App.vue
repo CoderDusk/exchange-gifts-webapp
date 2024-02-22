@@ -7,19 +7,19 @@
       </div>
       <el-empty
         v-if="activityList.length === 0"
-        description="暂无已保存的活动"
+        :description="$t('tips.noSaved')"
       />
       <el-table v-else :data="activityList" style="width: 100%">
-        <el-table-column prop="title" label="活动标题" />
-        <el-table-column prop="time" label="时间" width="160" />
-        <el-table-column label="操作" width="160">
+        <el-table-column prop="title" :label="$t('list.title')" />
+        <el-table-column prop="time" :label="$t('list.time')" width="160" />
+        <el-table-column :label="$t('list.action')" width="160">
           <template #default="scope">
             <ViewResult :data="scope.row" />
             <el-button
               @click="removeActivity(scope.$index)"
               type="danger"
               size="small"
-              >删除</el-button
+              >{{ $t('list.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -30,27 +30,21 @@
 
 <script setup>
 import { ref } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import CreateActivity from './components/CreateActivity.vue';
 import ViewResult from './components/ViewResult.vue';
 
+const { t } = useI18n();
+
+console.log();
+
 // 示例数据
 const exampleData = {
-  title: '示例活动',
-  joiners: [
-    '胡晗滢',
-    '花晓忆',
-    '秋驰陵',
-    '秋驰陵',
-    '诸冶园',
-    '龚壮珍',
-    '符朔鼎',
-    '廉嫱眉',
-    '梅莺望',
-    '惠日琴',
-  ],
+  title: t('exampleData.title'),
+  joiners: JSON.parse(t('exampleData.joiners')),
   time: '2024-02-12 17:45',
 };
+
 const activityList = ref([]);
 // 获取（刷新活动列表）
 function getActivityList() {

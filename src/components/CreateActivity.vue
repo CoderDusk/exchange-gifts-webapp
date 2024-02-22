@@ -1,32 +1,36 @@
 <template>
-  <el-button @click="createActivityDialogVisible = true" type="primary"
-    >创建活动</el-button
-  >
+  <el-button @click="createActivityDialogVisible = true" type="primary">{{
+    $t('create.title')
+  }}</el-button>
 
-  <el-dialog v-model="createActivityDialogVisible" title="创建活动" width="500">
-    <el-form :model="createActivityForm" label-width="80px">
-      <el-form-item label="活动标题">
+  <el-dialog
+    v-model="createActivityDialogVisible"
+    :title="$t('create.title')"
+    width="500"
+  >
+    <el-form :model="createActivityForm" label-width="100px">
+      <el-form-item :label="$t('create.form.title')">
         <el-input
           v-model="createActivityForm.title"
-          placeholder="请输入活动标题"
+          :placeholder="$t('create.form.titlePlaceholder')"
         />
       </el-form-item>
-      <el-form-item label="参与人">
+      <el-form-item :label="$t('create.form.joiners')">
         <div class="joiners-input">
           <div class="input">
             <el-input
               v-model="createActivityForm.joinerInput"
-              placeholder="请输入参与人"
+              :placeholder="$t('create.form.joinersPlaceholder')"
               @keyup.enter="addJoiner"
             />
-            <el-button @click="addJoiner" class="button" type="primary"
-              >添加</el-button
-            >
+            <el-button @click="addJoiner" class="button" type="primary">{{
+              $t('create.form.add')
+            }}</el-button>
           </div>
           <el-empty
             v-if="createActivityForm.joiners.length === 0"
             :image-size="100"
-            description="请添加活动参与者"
+            :description="$t('create.form.noJoinerTips')"
           />
           <div v-else class="list">
             <el-tag
@@ -42,8 +46,12 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="createActivity">创建</el-button>
-        <el-button @click="cancelSubmit">取消</el-button>
+        <el-button type="primary" @click="createActivity">{{
+          $t('create.form.create')
+        }}</el-button>
+        <el-button @click="cancelSubmit">{{
+          $t('create.form.cancel')
+        }}</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -53,8 +61,10 @@
 import { dayjs } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits(['getList']);
+const { t } = useI18n();
 
 // 创建活动
 const createActivityDialogVisible = ref(false);
@@ -68,13 +78,13 @@ const createActivityForm = ref({
 
 function createActivity() {
   if (createActivityForm.value.joiners.length <= 2) {
-    return ElMessage.error('参与者至少要有三人');
+    return ElMessage.error(t('tips.atLeastThreeJoiners'));
   }
 
   delete createActivityForm.value.joinerInput;
   if (createActivityForm.value.title.trim() === '') {
     createActivityForm.value.title =
-      dayjs().format('YYYY-MM-DD HH:mm') + ' 创建的活动';
+      dayjs().format('YYYY-MM-DD HH:mm') + t('create.titlePadding');
   }
   createActivityForm.value.id = dayjs().valueOf();
   createActivityForm.value.time = dayjs().format('YYYY-MM-DD HH:mm');
@@ -99,7 +109,7 @@ function cancelSubmit() {
 
 function addJoiner() {
   if (createActivityForm.value.joinerInput.trim() === '') {
-    return ElMessage.error('请输入参与人');
+    return ElMessage.error(t('tips.inputJoner'));
   }
 
   const isIncluded = createActivityForm.value.joiners.includes(
@@ -107,7 +117,7 @@ function addJoiner() {
   );
   if (isIncluded) {
     createActivityForm.value.joinerInput = '';
-    return ElMessage.error('请勿重复添加');
+    return ElMessage.error(t('tips.duplicateJoiner'));
   }
   createActivityForm.value.joiners.push(createActivityForm.value.joinerInput);
   createActivityForm.value.joinerInput = '';

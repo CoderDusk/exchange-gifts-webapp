@@ -4,21 +4,36 @@
     :plain="isViewExample"
     type="primary"
     :size="isViewExample ? 'default' : 'small'"
-    >{{ isViewExample ? '查看示例' : '查看' }}</el-button
+    >{{
+      isViewExample
+        ? $t('viewResult.viewExampleTitle')
+        : $t('viewResult.viewResultTitle')
+    }}</el-button
   >
   <el-dialog v-model="dialogVisible" append-to-body>
     <el-descriptions
       :border="true"
       :column="1"
-      :title="isViewExample ? '查看示例' : '查看结果'"
+      :title="
+        isViewExample
+          ? $t('viewResult.viewExampleTitle')
+          : $t('viewResult.viewResultTitle')
+      "
     >
-      <el-descriptions-item label="活动标题" label-class-name="desc-label">{{
-        data.title
-      }}</el-descriptions-item>
-      <el-descriptions-item label="创建时间" label-class-name="desc-label">{{
-        data.time
-      }}</el-descriptions-item>
-      <el-descriptions-item label="匹配结果" label-class-name="desc-label">
+      <el-descriptions-item
+        :label="$t('viewResult.title')"
+        label-class-name="desc-label"
+        >{{ data.title }}</el-descriptions-item
+      >
+      <el-descriptions-item
+        :label="$t('viewResult.time')"
+        label-class-name="desc-label"
+        >{{ data.time }}</el-descriptions-item
+      >
+      <el-descriptions-item
+        :label="$t('viewResult.matchResult')"
+        label-class-name="desc-label"
+      >
         <div class="result">
           <div class="result1">{{ result1 }}</div>
           <hr />
