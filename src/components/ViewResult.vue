@@ -10,7 +10,7 @@
         : $t('viewResult.viewResultTitle')
     }}</el-button
   >
-  <el-dialog v-model="dialogVisible" append-to-body>
+  <el-dialog v-model="dialogVisible" append-to-body :fullscreen="isMobile">
     <el-descriptions
       :border="true"
       :column="1"
@@ -48,6 +48,13 @@
 
 <script setup>
 import { ref } from 'vue';
+
+const userAgent = navigator.userAgent;
+const isMobile =
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    userAgent
+  );
+
 const { data, isViewExample } = defineProps({
   data: Object,
   isViewExample: {
