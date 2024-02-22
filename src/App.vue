@@ -1,5 +1,5 @@
 <template>
-  <div class="outer-container">
+  <div class="outer-container" :class="{ desktop: !isMobile }">
     <div class="app-container">
       <div class="action-buttons">
         <CreateActivity @getList="getActivityList" />
@@ -36,7 +36,11 @@ import ViewResult from './components/ViewResult.vue';
 
 const { t } = useI18n();
 
-console.log();
+const userAgent = navigator.userAgent;
+const isMobile =
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    userAgent
+  );
 
 // 示例数据
 const exampleData = {
@@ -68,14 +72,10 @@ function removeActivity(targetIndex) {
 <style lang="scss" scoped>
 .outer-container {
   height: 100vh;
-  padding: 10px 0;
   box-sizing: border-box;
 }
 
 .app-container {
-  width: 80%;
-  max-width: 720px;
-  margin: 0 auto;
   padding: 10px 20px;
   background-color: white;
   box-sizing: border-box;
@@ -86,6 +86,16 @@ function removeActivity(targetIndex) {
     display: flex;
     justify-content: space-around;
     margin: 20px 0 40px 0;
+  }
+}
+
+.desktop {
+  padding: 10px 0;
+
+  .app-container {
+    width: 80%;
+    max-width: 720px;
+    margin: 0 auto;
   }
 }
 </style>
